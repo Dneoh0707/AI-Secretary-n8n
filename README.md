@@ -54,6 +54,34 @@ This project was developed to automate these processes using LLM-based workflow 
 
 ## System Architecture
 
+flowchart TB
+  A(("사용자 (Slack)")) --> B["n8n Trigger (Webhook)"]
+  B --> C["Intent Router (LLM)"]
+  
+  subgraph "Logic Branches"
+    C -->|Search| D["RAG Search Agent"]
+    C -->|Create| E["Document Create Agent"]
+    C -->|Chat| F["General Chat (LLM)"]
+  end
+
+  D --> G{"보안 게이트 (권한 체크)"}
+  G -->|권한 없음| H["관리자 메일 발송 (Gmail)"]
+  G -->|권한 있음| I["Answer Agent"]
+
+  E --> J["Google Workspace (Docs/Drive)"]
+  J --> K["파일 전송 (Gmail/Slack)"]
+  K --> L["임시 파일 삭제 (Cleanup)"]
+  L --> I
+
+  F --> I
+  I --> M["최종 보고 (Slack)"]
+
+  subgraph "External Integration"
+    D --- VS["Vector Store (Pinecone)"]
+    E --- GW["Google Cloud API"]
+  end
+  
+
 ![Architecture](images/architecture.png)
 
 ---
