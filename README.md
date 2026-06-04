@@ -54,35 +54,10 @@ This project was developed to automate these processes using LLM-based workflow 
 
 ## System Architecture
 
-flowchart TB
-  A(("사용자 (Slack)")) --> B["n8n Trigger (Webhook)"]
-  B --> C["Intent Router (LLM)"]
-  
-  subgraph "Logic Branches"
-    C -->|Search| D["RAG Search Agent"]
-    C -->|Create| E["Document Create Agent"]
-    C -->|Chat| F["General Chat (LLM)"]
-  end
+<img src="pictures/architecture1.png" width="700px">
 
-  D --> G{"보안 게이트 (권한 체크)"}
-  G -->|권한 없음| H["관리자 메일 발송 (Gmail)"]
-  G -->|권한 있음| I["Answer Agent"]
+<img src="pictures/architecture.jpg" width="700px">
 
-  E --> J["Google Workspace (Docs/Drive)"]
-  J --> K["파일 전송 (Gmail/Slack)"]
-  K --> L["임시 파일 삭제 (Cleanup)"]
-  L --> I
-
-  F --> I
-  I --> M["최종 보고 (Slack)"]
-
-  subgraph "External Integration"
-    D --- VS["Vector Store (Pinecone)"]
-    E --- GW["Google Cloud API"]
-  end
-  
-
-![Architecture](images/architecture.png)
 
 ---
 
@@ -90,19 +65,13 @@ flowchart TB
 
 Natural language search over internal organizational documents using RAG.
 
----
-
 ### Document Generation
 
 Automatic generation and distribution of documents through Google Workspace.
 
----
-
 ### Vacation Recovery Assistant
 
 Summarizes unread Gmail and Slack messages and generates prioritized action items.
-
---- 
 
 ### Knowledge Base Synchronization
 
@@ -112,25 +81,28 @@ Automatically indexes Google Drive and Notion content into a centralized vector 
 
 ## Workflow Overview
 
-![Workflow Overview](images/workflow_overview.png)
+![Worflow Overview](pictures/chatbot_overall_logic.png)
 
 ---
 
 ## RAG Pipeline
 
-![RAG Pipeline](images/rag_pipeline.png)
+![RAG Pipeline](pictures/RAG_module.png)
 
 ---
 
 ## Vacation Recovery Workflow
 
-![Vacation Assistant](images/vacation_assistant.png)
+![Vacation Assistant](pictures/slack_auto_messaging.png)
 
 ---
 
 ## Sequence Diagram
 
-![Sequence Diagram](images/sequence_diagram.png)
+<img src="pictures/sequencing_diagram1.png" width="700px">
+
+<img src="pictures/sequencing_diagram.jpg" width="700px">
+
 
 --- 
 
